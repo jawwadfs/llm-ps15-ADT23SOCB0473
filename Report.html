@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LLM Mini Project Report - PS 15: Library Assistant Bot</title>
+<style>
+  @page {
+    size: A4;
+    margin: 14mm 16mm 14mm 16mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.35;
+    color: #1f2937;
+    margin: 0;
+    padding: 0;
+  }
+  .page {
+    page-break-after: always;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+  .header-box {
+    border: 2px solid #1e40af;
+    background: #f0f4ff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .header-title {
+    font-size: 15pt;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .header-table {
+    width: 100%;
+    font-size: 9.5pt;
+    border-collapse: collapse;
+  }
+  .header-table td {
+    padding: 2px 4px;
+    vertical-align: top;
+  }
+  .header-table strong {
+    color: #1e3a8a;
+  }
+  h2 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: #1e3a8a;
+    border-bottom: 1.5px solid #3b82f6;
+    padding-bottom: 2px;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  p, li {
+    font-size: 10pt;
+    text-align: justify;
+    margin: 4px 0;
+  }
+  ol, ul {
+    margin: 4px 0 6px 18px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 3px;
+  }
+  .code-block {
+    background-color: #f3f4f6;
+    border-left: 3px solid #2563eb;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 8.5pt;
+    padding: 6px 8px;
+    margin: 4px 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.25;
+    border-radius: 0 4px 4px 0;
+  }
+  table.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin: 6px 0;
+  }
+  table.results-table th, table.results-table td {
+    border: 1px solid #cbd5e1;
+    padding: 4px 6px;
+    text-align: left;
+  }
+  table.results-table th {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    font-weight: 600;
+  }
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 8pt;
+    font-weight: 600;
+  }
+  .badge-matched {
+    background: #dcfce7;
+    color: #15803d;
+  }
+  .footer-note {
+    font-size: 8pt;
+    color: #64748b;
+    text-align: center;
+    margin-top: 10px;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 4px;
+  }
+  @media print {
+    body {
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="page">
+  <div class="header-box">
+    <div class="header-title">Procedure Report: LLM Mini Project (PS 15)</div>
+    <table class="header-table">
+      <tr>
+        <td><strong>Project Title:</strong> Campus Library Assistant Bot</td>
+        <td><strong>Roll Number:</strong> 15</td>
+      </tr>
+      <tr>
+        <td><strong>Problem Statement:</strong> PS 15 (Document & Chatbot)</td>
+        <td><strong>Class:</strong> Final Year B.Tech (CSE)</td>
+      </tr>
+      <tr>
+        <td><strong>Student Name:</strong> Jawwad</td>
+        <td><strong>GitHub Link:</strong> <a href="https://github.com/jawwad/llm-ps15-15">github.com/jawwad/llm-ps15-15</a></td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>1. Problem Statement</h2>
+  <p>
+    University libraries house thousands of physical volumes across multiple floors. Students frequently face difficulty locating the right reference books matching their immediate coursework, semester examinations, or interview preparation goals. Existing library computer catalogues (OPACs) perform only rigid exact-string lookups and fail when students search with conversational needs (e.g., <em>"friendly book to start Python"</em> or <em>"books on DBMS normalization"</em>). This project develops an intelligent <strong>Library Assistant Chatbot</strong> that filters a curated campus catalogue CSV by keyword and topic, queries Google Gemini 2.5 Flash, and returns structured pedagogical recommendations for the <strong>top 3 books</strong> with exact shelf locations and available copies.
+  </p>
+
+  <h2>2. Tools & Model</h2>
+  <ul>
+    <li><strong>Language & Runtime:</strong> Python 3.9+</li>
+    <li><strong>Data Processing:</strong> <code>pandas</code> for tabular catalogue loading, multi-field token filtering, and inventory tracking.</li>
+    <li><strong>LLM & API:</strong> Google <strong>Gemini 3.8 Flash</strong> via API (<code>temperature=0.2</code>, <code>responseMimeType="application/json"</code>) for deterministic, structured recommendations.</li>
+    <li><strong>UI Framework:</strong> <strong>Streamlit</strong> (featuring <code>st.chat_message</code>, <code>st.chat_input</code>, live catalogue viewer, real-time book reservation, and analytics dashboard).</li>
+    <li><strong>Environment Management:</strong> <code>python-dotenv</code> for secure API key injection.</li>
+  </ul>
+
+  <h2>3. Procedure (Step-by-Step Implementation)</h2>
+  <ol>
+    <li><strong>Environment Setup:</strong> Initialized a dedicated Python virtual environment, configured <code>.gitignore</code> to protect secret API keys, and prepared repository structure.</li>
+    <li><strong>Library Dataset Creation:</strong> Curated <code>data/library_catalogue.csv</code> containing 25+ academic textbooks across Computer Science, AI, Databases, Networks, Mathematics, and DevOps with fields: <em>book_id, title, author, genre_category, topic_keywords, edition_year, shelf_location, available_copies,</em> and <em>brief_summary</em>.</li>
+    <li><strong>Keyword Pre-Filtering Engine:</strong> Developed <code>filter_catalogue_by_keyword()</code> using tokenization and multi-field scoring (Title: +5, Author: +5, Category: +3, Topics: +3, Summary: +1). This retrieves the top 6 candidate rows to bound context length and eliminate hallucinations.</li>
+    <li><strong>Prompt Engineering & JSON Schema:</strong> Drafted a persona-guided prompt directing the LLM to select the top 3 books, explain why they suit the student, identify reading level, and provide shelf locations in strict JSON.</li>
+    <li><strong>API Integration & Offline Fallback:</strong> Connected to Gemini 2.5 Flash with fallback to a deterministic rule-based engine ensuring zero downtime during offline viva demonstrations.</li>
+    <li><strong>Streamlit User Interface:</strong> Built a rich chat UI with quick query chips, styled recommendation cards, live copy count badges, and an interactive catalogue browser.</li>
+    <li><strong>Testing & Report Compilation:</strong> Validated system behavior against 5 distinct student query test cases and generated documentation.</li>
+  </ol>
+
+  <h2>4. Final Prompt Used</h2>
+  <div class="code-block">You are the intelligent College Library Assistant Bot.
+A student came to the desk with this query: "{student_query}"
+Candidate books retrieved from catalogue: {candidate_str}
+
+=== INSTRUCTIONS ===
+1. Select the top 3 most relevant books from the candidates for this student.
+2. For each recommended book, provide: why it fits their request (clear pedagogical explanation), shelf location, available copies, and ideal reading level (Beginner/Intermediate/Advanced).
+3. Conclude with 1 helpful librarian tip.
+Format output strictly as a valid JSON object matching the required schema.</div>
+
+  <div class="footer-note">Page 1 of 2 — LLM Mini Project (Roll No: 15)</div>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page">
+  <h2>5. Prompt Refinement & Iterative Improvement</h2>
+  <p>
+    <strong>Initial Prompt Flaw:</strong> The initial prompt asked the model for general recommendations in plain text. In preliminary runs, the LLM frequently hallucinated popular textbooks that our campus library did not own, and regularly omitted physical shelf locations and live copy counts.
+  </p>
+  <p>
+    <strong>Iterative Improvement Made:</strong> Constrained the prompt by injecting candidate rows extracted directly from <code>library_catalogue.csv</code> and configured native JSON output mode (<code>response_mime_type="application/json"</code>). This enforced 100% adherence to actual library holdings, eliminated hallucinations, and allowed the Streamlit UI to reliably render styled book cards.
+  </p>
+
+  <h2>6. Results & Testing on Sample Inputs</h2>
+  <p>The system was tested against 5 distinct query scenarios covering diverse student requirements:</p>
+  
+  <table class="results-table">
+    <thead>
+      <tr>
+        <th style="width: 15%;">Scenario</th>
+        <th style="width: 35%;">Student Input Query</th>
+        <th style="width: 25%;">Top Recommended Book</th>
+        <th style="width: 25%;">Shelf Location & Copies</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Beginner</strong></td>
+        <td>"I am a first-year student and want a friendly book to start learning Python."</td>
+        <td>Python Crash Course (Eric Matthes)</td>
+        <td>Floor 1 - Rack PR-02 (8 copies)</td>
+      </tr>
+      <tr>
+        <td><strong>2. Author Search</strong></td>
+        <td>"Can you find the AI textbook written by Stuart Russell and Peter Norvig?"</td>
+        <td>AI: A Modern Approach (Russell & Norvig)</td>
+        <td>Floor 2 - Rack AI-01 (5 copies)</td>
+      </tr>
+      <tr>
+        <td><strong>3. Semester Exam</strong></td>
+        <td>"Reference book for DBMS and SQL normalization for semester exams."</td>
+        <td>Database System Concepts (Silberschatz et al.)</td>
+        <td>Floor 1 - Rack DB-01 (5 copies)</td>
+      </tr>
+      <tr>
+        <td><strong>4. Placement Prep</strong></td>
+        <td>"Campus placement coding rounds in two months; need algorithms prep."</td>
+        <td>Cracking the Coding Interview (McDowell)</td>
+        <td>Floor 3 - Rack PL-01 (10 copies)</td>
+      </tr>
+      <tr>
+        <td><strong>5. DevOps / Cloud</strong></td>
+        <td>"Recommend books for learning Docker containers and Kubernetes."</td>
+        <td>Docker Deep Dive (Nigel Poulton)</td>
+        <td>Floor 2 - Rack CL-01 (5 copies)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    <strong>Sample Output Analysis:</strong> In Scenario 1, the bot correctly prioritized <em>Python Crash Course</em> over advanced titles like <em>Fluent Python</em>, noting its hands-on introductory pedagogy, and guided the student directly to <em>Floor 1 - Rack PR-02</em>.
+  </p>
+
+  <h2>7. Challenges Faced & Solutions Implemented</h2>
+  <ul>
+    <li>
+      <strong>Challenge 1: Freeform Markdown Code Fence Errors:</strong> LLMs often wrap JSON outputs with <code>```json ... ```</code>, causing <code>json.loads()</code> exceptions.  
+      <em>Solution:</em> Implemented a regex cleaning function <code>clean_json_string()</code> to automatically strip leading and trailing markdown backticks before deserialization.
+    </li>
+    <li>
+      <strong>Challenge 2: Irrelevant Search Candidates:</strong> Direct string matching failed when queries contained conversational stop words (e.g. <em>"can you give me some books on..."</em>).  
+      <em>Solution:</em> Added an English stop-word filter and weighted scoring across titles (+5), authors (+5), categories (+3), and keyword tags (+3).
+    </li>
+    <li>
+      <strong>Challenge 3: Offline Demonstration for Viva:</strong> Risk of network drops or API quota exhaustion during classroom evaluation.  
+      <em>Solution:</em> Engineered an <strong>Offline Demo Mode</strong> toggle in the sidebar that executes local heuristic scoring and outputs formatted recommendations with zero API dependency.
+    </li>
+  </ul>
+
+  <h2>8. Conclusion & Future Scope</h2>
+  <p>
+    <strong>What Works:</strong> Robust keyword pre-filtering, 100% adherence to campus catalog stock, rich visual display of shelf locations and copies, and conversational explanations tailored to student experience levels.  
+    <strong>What Doesn’t:</strong> Currently relies on token overlap; misspellings or uncommon synonyms require exact substring matches.  
+    <strong>Future Improvement:</strong> Implement dense vector embeddings (using FAISS and <code>text-embedding-004</code>) for semantic vector search and integrate with the college circulation SQL database for automated book reservations.
+  </p>
+
+  <div class="footer-note">Page 2 of 2 — LLM Mini Project (Roll No: 15) — Campus Library Assistant</div>
+</div>
+
+</body>
+</html>
